@@ -1,0 +1,90 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using WebApplication2.Areas.Identity.Data
+@model IEnumerable<WebApplication2.Models.Orders>
+@inject UserManager<WebApplication2User> UserManager
+@{
+    ViewData["Title"] = "Zamówienia";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var uzytkownik = await UserManager.GetUserAsync(User);
+}
+
+<h1>Zamówienia</h1>
+@using (Html.BeginForm()){
+    <p>Szukaj po zamawiającym @Html.TextBox("searching") <input type="submit" value="Szukaj" class="btn btn-primary" /></p>
+}
+<p>
+    <a asp-action="CreateFirst" class="btn btn-primary">Dodaj zamówienie</a>
+</p>
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>
+                Zamawiający
+            </th>
+            <th>
+                Zamówione przedmioty
+            </th>
+            <th>
+                Łączna cena
+            </th>
+            <th>
+                Data zamówienia
+            </th>
+            <th>
+                Stan płatności
+            </th>
+            <th>
+                Stan dostawy
+            </th>
+            <th>
+                Dodatkowe instrukcje
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Client.FirstName) @Html.DisplayFor(modelItem => item.Client.LastName)
+            </td>
+            <td>
+                @foreach(var i in item.ItemListId){
+                <p>@Html.DisplayFor(modelItem => i.IDItems.Name) [sztuk @i.ItemsCount]</p>
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PriceTotal) zł
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderDate)
+            </td>
+                @{
+                    string klasa = "";
+                    string klass = "";
+                }
+                @if(item.PaymentStatus == "Opłacone"){ klasa = "text-success"; }
+                @if(item.PaymentStatus == "Nieopłacone"){ klasa = ""; }
+                @if(item.PaymentStatus == "Zwrot pieniędzy"){ klasa = "text-danger"; }
+                @if(item.DeliveryStatus == "Wysłane"){ klass = "text-info"; }
+                @if(item.DeliveryStatus == "Niewysłane"){ klass = ""; }
+                @if(item.DeliveryStatus == "Dostarczone"){ klass = "text-success"; }
+                @if(item.DeliveryStatus == "Zwrócone"){ klass = "text-danger"; }
+                <td class="@klasa">
+                @Html.DisplayFor(modelItem => item.PaymentStatus)
+            </td>
+            <td class="@klass">
+                @Html.DisplayFor(modelItem => item.DeliveryStatus)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Note)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary btn-block">Edytuj</a>
+                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-block">Szczegóły</a>
+                @if (uzytkownik.Admin){<a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-block">Usuń</a>}
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

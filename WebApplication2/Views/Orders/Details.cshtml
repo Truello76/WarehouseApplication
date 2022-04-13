@@ -1,0 +1,109 @@
+﻿@model WebApplication2.Models.Orders
+
+@{
+    ViewData["Title"] = "Szczegóły zamówienia";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Szczegóły zamówienia</h1>
+
+<div>
+    <hr />
+    <table class="table table-striped">
+        <tr>
+        <th scope="row" class = "col-sm-2">
+            Zamawiający
+        </th>
+        <td class = "col-sm-10">
+            @Html.DisplayFor(model => model.Client.FirstName) @Html.DisplayFor(model => model.Client.LastName)
+        </td>
+        </tr>
+        <tr>
+        <th scope="row" class = "col-sm-2">
+            Firma zamawiająca
+        </th>
+        <td class = "col-sm-10">
+            @Html.DisplayFor(model => model.Client.Firm)
+        </td>
+        </tr>
+        <tr>
+        <th scope="row" class = "col-sm-2">
+            Zamówione przedmioty
+        </th>
+        <td class = "col-sm-10">
+            @foreach(var x in Model.ItemListId){
+            <p>@Html.DisplayFor(model => x.IDItems.Name) [sztuk @x.ItemsCount]</p>
+            }
+        </td>
+        </tr>
+        <tr>
+        <th scope="row" class = "col-sm-2">
+            Adres dostawy
+        </th>
+        <td class = "col-sm-10">
+            @Html.DisplayFor(model => model.Address)
+        </td>
+        </tr>
+        <tr>
+        <th scope="row" class = "col-sm-2">
+            Łączna cena
+        </th>
+        <td class = "col-sm-10">
+            @Html.DisplayFor(model => model.PriceTotal) zł
+        </td>
+        </tr>
+        <tr>
+        <th scope="row" class = "col-sm-2">
+            Data zamówienia
+        </th>
+        <td class = "col-sm-10">
+            @Html.DisplayFor(model => model.OrderDate)
+        </td>
+        </tr>
+        <tr>
+        <th scope="row" class = "col-sm-2">
+            Data wysyłki
+        </th>
+        <td class = "col-sm-10">
+            @Html.DisplayFor(model => model.ShipmentDate)
+        </td>
+        </tr>
+        <tr>
+        <th scope="row" class = "col-sm-2">
+            Data dostawy
+        </th>
+        <td class = "col-sm-10">
+            @Html.DisplayFor(model => model.DeliveryDate)
+        </td>
+        </tr>
+        <tr>
+        <th scope="row" class = "col-sm-2">
+            Stan płatności
+        </th>
+        <td class = "col-sm-10">
+            @Html.DisplayFor(model => model.PaymentStatus)
+        </td>
+        </tr>
+        <tr>
+        <th scope="row" class = "col-sm-2">
+            Stan dostawy
+        </th>
+        <td class = "col-sm-10">
+            @Html.DisplayFor(model => model.DeliveryStatus)
+        </td>
+        </tr>
+        <tr>
+        <th scope="row" class = "col-sm-2">
+            Dodatkowe instrukcje
+        </th>
+        <td class = "col-sm-10">
+            @Html.DisplayFor(model => model.Note)
+        </td>
+        </tr>
+    </table>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edytuj</a>
+    <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Usuń</a>
+    <a asp-action="Index" class="btn btn-secondary">Wróć do zamówień</a>
+</div>

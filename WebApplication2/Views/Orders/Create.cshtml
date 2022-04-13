@@ -1,0 +1,53 @@
+﻿@model WebApplication2.Models.OrdersCreateModel
+
+@{
+    ViewData["Title"] = "Dodaj zamówienie";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Wypełnij dane zamówienia</h1>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label class="control-label">Osoba zamawiająca: @Model.ClientConfirm</label>
+                <input asp-for="@Model.ClientConfirm" type="hidden" />
+            </div>
+            @foreach(var x in Model.ItemListConfirm){
+            <div class="form-group">
+                <label class="control-label">Ilość sztuk dla @x</label>
+                <input asp-for="ItemCountList[Model.ItemListConfirm.IndexOf(x)]" value="1" class="form-control" min=1 />
+                <input asp-for="@Model.ItemListConfirm[Model.ItemListConfirm.IndexOf(x)]" type="hidden" />
+            </div>
+            }
+            <div class="form-group">
+                <label class="control-label">Adres dostawy</label>
+                <input asp-for="Orders.Address" class="form-control" value="@Model.Orders.Address" />
+                <span asp-validation-for="Orders.Address" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Data zamówienia</label>
+                <input asp-for="Orders.OrderDate" class="form-control" />
+                <span asp-validation-for="Orders.OrderDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Dodatkowe instrukcje</label>
+                <textarea asp-for="Orders.Note" class="form-control"></textarea>
+                <span asp-validation-for="Orders.Note" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Dodaj" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="CreateFirst" class="btn btn-secondary">Rozpocznij od nowa</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

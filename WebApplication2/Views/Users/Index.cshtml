@@ -1,0 +1,62 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using WebApplication2.Areas.Identity.Data
+@model IEnumerable<WebApplication2.Areas.Identity.Data.WebApplication2User>
+@inject UserManager<WebApplication2User> UserManager
+@{
+    ViewData["Title"] = "Użytkownicy";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var uzytkownik = await UserManager.GetUserAsync(User);
+}
+@if(uzytkownik.Admin){
+<h1>Użytkownicy</h1>
+<p>
+    <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-primary">Dodaj użytkownika</a>
+</p>
+@using (Html.BeginForm()){
+    <p>Szukaj po nazwie użytkownika @Html.TextBox("searchingUsername") <input type="submit" value="Szukaj" class="btn btn-primary" /></p>
+}
+@using (Html.BeginForm()){
+    <p>Szukaj po imieniu lub nazwisku @Html.TextBox("searchingName") <input type="submit" value="Szukaj" class="btn btn-primary" /></p>
+}
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>
+                Nazwa użytkownika
+            </th>
+            <th>
+                Imię
+            </th>
+            <th>
+                Nazwisko
+            </th>
+            <th>
+                Administrator
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Admin)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Edytuj</a>
+                @if(item.Id != uzytkownik.Id){<a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Usuń</a>}
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+}

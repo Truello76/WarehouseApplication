@@ -1,0 +1,45 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using WebApplication2.Areas.Identity.Data
+@model IEnumerable<WebApplication2.Models.Items>
+@inject UserManager<WebApplication2User> UserManager
+@{
+    ViewData["Title"] = "Przedmioty";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var uzytkownik = await UserManager.GetUserAsync(User);
+}
+<h1>Przedmioty</h1>
+<p><a asp-action="Create" class="btn btn-primary">Dodaj przedmiot</a></p>
+@using (Html.BeginForm()){
+    <p>Szukaj po nazwie @Html.TextBox("searching") <input type="submit" value="Szukaj" class="btn btn-primary" /></p>
+}
+@using (Html.BeginForm()){
+    <p>Szukaj po kodzie regału @Html.TextBox("searchingShelf") <input type="submit" value="Szukaj" class="btn btn-primary" /></p>
+}
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>@Html.ActionLink("Nazwa","Index", new {sorting = ViewBag.NameSort})</th>
+            <th>@Html.ActionLink("Ilość","Index", new {sorting = ViewBag.CountSort})</th>
+            <th>@Html.ActionLink("Cena jednostkowa","Index", new {sorting = ViewBag.PriceSort})</th>
+            <th>@Html.ActionLink("Kod regału","Index", new {sorting = ViewBag.ShelfSort})</th>
+            <th>Wrażliwe</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model) {
+    <tr class="@(item.ItemCount == 0 ? "text-danger" : "")">
+        <td>@Html.DisplayFor(modelItem => item.Name)</td>
+        <td>@Html.DisplayFor(modelItem => item.ItemCount)</td>
+        <td>@Html.DisplayFor(modelItem => item.Price) zł</td>
+        <td>@Html.DisplayFor(modelItem => item.ShelfCode)</td>
+        <td>@Html.DisplayFor(modelItem => item.Fragile)</td>
+        <td>
+            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Edytuj</a>
+            @if (uzytkownik.Admin){
+                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Usuń</a> }
+        </td>
+    </tr>
+    }
+    </tbody>
+</table>

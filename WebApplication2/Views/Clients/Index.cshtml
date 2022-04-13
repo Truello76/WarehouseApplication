@@ -1,0 +1,62 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using WebApplication2.Areas.Identity.Data
+@model IEnumerable<WebApplication2.Models.Clients>
+@inject UserManager<WebApplication2User> UserManager
+@{
+    ViewData["Title"] = "Klienci";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var uzytkownik = await UserManager.GetUserAsync(User);
+}
+
+<h1>Klienci</h1>
+<p>
+    <a asp-action="Create" class="btn btn-primary">Dodaj klienta</a>
+</p>
+@using (Html.BeginForm()){
+    <p>Szukaj po imieniu lub nazwisku @Html.TextBox("searchingName") <input type="submit" value="Szukaj" class="btn btn-primary" /></p>
+}
+@using (Html.BeginForm()){
+    <p>Szukaj po nazwie firmy @Html.TextBox("searchingFirm") <input type="submit" value="Szukaj" class="btn btn-primary" /></p>
+}
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>
+                @Html.ActionLink("Imię","Index", new {sorting = ViewBag.FirstNameSort})
+            </th>
+            <th>
+                @Html.ActionLink("Nazwisko","Index", new {sorting = ViewBag.LastNameSort})
+            </th>
+            <th>
+                @Html.ActionLink("Firma","Index", new {sorting = ViewBag.FirmSort})
+            </th>
+            <th>
+                E-mail
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Firm)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Edytuj</a>
+                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">Szczegóły</a>
+                @if (uzytkownik.Admin){<a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Usuń</a>}
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -1,0 +1,73 @@
+﻿@model WebApplication2.Models.Orders
+
+@{
+    ViewData["Title"] = "Edytuj zamówienie";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Edytuj zamówienie</h1>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="Client.Id" />
+            <div class="form-group">
+                <label class="control-label">Adres</label>
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Data zamówienia</label>
+                <input asp-for="OrderDate" class="form-control" />
+                <span asp-validation-for="OrderDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Data wysyłki</label>
+                <input asp-for="ShipmentDate" class="form-control" />
+                <span asp-validation-for="ShipmentDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Data dostawy</label>
+                <input asp-for="DeliveryDate" class="form-control" />
+                <span asp-validation-for="DeliveryDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Stan płatności</label>
+                <select asp-for="PaymentStatus" class="form-control selectpicker">
+                    <option>Nieopłacone</option>
+                    <option>Opłacone</option>
+                    <option>Zwrot pieniędzy</option>
+                </select>
+                <span asp-validation-for="PaymentStatus" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Stan wysyłki</label>
+                <select asp-for="DeliveryStatus" class="form-control selectpicker">
+                    <option>Niewysłane</option>
+                    <option>Wysłane</option>
+                    <option>Dostarczone</option>
+                    <option>Zwrócone</option>
+                </select>
+                <span asp-validation-for="DeliveryStatus" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Dodatkowe instrukcje</label>
+                <textarea asp-for="Note" class="form-control"></textarea>
+                <span asp-validation-for="Note" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Edytuj" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index" class="btn btn-secondary">Wróć do zamówień</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

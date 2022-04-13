@@ -1,0 +1,54 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using WebApplication2.Areas.Identity.Data
+
+@inject SignInManager<WebApplication2User> SignInManager
+@inject UserManager<WebApplication2User> UserManager
+@{
+    var uzytkownik = await UserManager.GetUserAsync(User);
+    var fname = "";
+    var lname = "";
+    if (SignInManager.IsSignedIn(User))
+    {
+        fname = uzytkownik.FirstName;
+        lname = uzytkownik.LastName;
+    }
+}
+
+<ul class="navbar-nav">
+@if (SignInManager.IsSignedIn(User))
+{
+    <li class="nav-item navbar-text">
+        @*<a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">*@Zalogowano jako: @fname @lname
+    </li>
+    <li class="nav-item">
+        <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+            <button id="logout" type="submit" class="nav-link btn btn-link text-dark">Wyloguj</button>
+        </form>
+    </li>
+}
+else
+{
+    @*<li class="nav-item">
+        <a class="nav-link text-dark" id="register" asp-area="Identity" asp-page="/Account/Register">Register</a>
+    </li>*@
+    <li class="nav-item">
+        <a class="nav-link text-dark" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
+    </li>
+}
+</ul>
+@if (SignInManager.IsSignedIn(User)){
+<ul class="navbar-nav flex-grow-1">
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">Opcje</a>
+        <div class="dropdown-menu">
+            <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Clients" asp-action="Index">Klienci</a>
+            <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Items" asp-action="Index">Przedmioty</a>
+            <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Orders" asp-action="Reports">Raporty</a>
+            <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Orders" asp-action="Index">Zamówienia</a>
+                @if (uzytkownik.Admin) {
+                    <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Users" asp-action="Index">Użytkownicy</a>
+                }
+        </div>
+    </li>
+</ul>
+}

@@ -1,0 +1,44 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using WebApplication2.Areas.Identity.Data
+@model WebApplication2.Models.Clients
+@inject UserManager<WebApplication2User> UserManager
+@{
+    ViewData["Title"] = "Szczegóły klienta";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var uzytkownik = await UserManager.GetUserAsync(User);
+}
+<h1>Szczegóły klienta</h1>
+<div>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">Imię</dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.FirstName)
+        </dd>
+        <dt class = "col-sm-2">Nazwisko</dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.LastName)
+        </dd>
+        <dt class = "col-sm-2">Firma</dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Firm)
+        </dd>
+        <dt class = "col-sm-2">E-mail</dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+        <dt class = "col-sm-2">Telefon</dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Phone)
+        </dd>
+        <dt class = "col-sm-2">Adres</dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Address)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edytuj</a>
+    @if (uzytkownik.Admin){<a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Usuń</a>}
+    <a asp-action="Index" class="btn btn-secondary">Wróć do klientów</a>
+</div>

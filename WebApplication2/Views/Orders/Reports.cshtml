@@ -1,0 +1,52 @@
+﻿@model WebApplication2.Models.Reports
+@{
+    ViewData["Title"] = "Raporty";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Raporty za ostatni @Model.Filter</h1>
+<hr />
+<table class="table table-bordered">
+    <tr>
+        <th>
+            Łączny przychód
+        </th>
+        <th>
+            Liczba zamówień
+        </th>
+    </tr>
+    <tr>
+        <td>
+            @Html.DisplayFor(x => Model.IncomeTotal) zł
+        </td>
+        <td>
+            @Html.DisplayFor(x => Model.Stats[0])
+        </td>
+    </tr>
+    <tr>
+        <th>
+            Liczba opłaconych zamówień
+        </th>
+        <th>
+            Liczba dostarczonych zamówień
+        </th>
+    </tr>
+    <tr>
+        <td>
+            @Html.DisplayFor(x => Model.Stats[1])
+        </td>
+        <td>
+            @Html.DisplayFor(x => Model.Stats[2])
+        </td>
+    </tr>
+</table>
+<form asp-action="Reports">
+<p><select class="selectpicker" asp-for="Filter">
+    <option>Ostatni tydzień</option>
+    <option>Ostatni miesiąc</option>
+    <option>Ostatni rok</option>
+</select></p>
+<div class="form-group">
+    <input type="submit" value="Filtruj" class="btn btn-primary" />
+</div>
+</form>
